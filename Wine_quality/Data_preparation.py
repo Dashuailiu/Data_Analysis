@@ -1,4 +1,10 @@
 import pandas
+import matplotlib.pyplot as plt
+
+
+from pylab import *
+
+from utilities import z_score, z_score_np
 
 
 def pre_processing():
@@ -13,22 +19,13 @@ def pre_processing():
     summary = data.describe()
     print(summary)
 
-    std_data = standardization(data, summary)
+    std_data = z_score(data)
     print(std_data)
 
-
-def standardization(data, summary):
-    """
-    :param data
-    :param summary count, mean, standard deviation
-    :return: standized
-    """
-    for i in range(data.shape[1]):
-        mean = summary.iloc[1, i]
-        std = summary.iloc[2, i]
-        data.iloc[:, i] = (data.iloc[:, i] - mean) / std
-
-    return data
+    plt.boxplot(std_data.values)
+    plt.xlabel("Attributes")
+    plt.ylabel("Quartile Range - Normalized")
+    plt.show()
 
 
 if __name__ == '__main__':
