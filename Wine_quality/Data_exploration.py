@@ -1,24 +1,15 @@
 from pylab import *
 
 import pandas
+import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from scipy.stats import kstest, normaltest
 
-from utilities import z_score, z_score_np
-
-
-def file_open():
-    file_path = "./data/White Wine Dataset.csv"
-
-    pandas.set_option("max_columns", 20)
-    data = pandas.read_csv(file_path, header=0, sep=',')
-
-    return data
+from utilities import z_score
+from Wine_quality import file_open, target_col
 
 
 def data_overall(data=pandas.DataFrame()):
-    target_col = 'quality'
     print(data.dtypes)
     print(data.head())
 
@@ -59,14 +50,14 @@ def data_overall(data=pandas.DataFrame()):
     plt.show()
 
 
-def visualization(func, data=pandas.DataFrame(), columns=None):
+def visualization(data=pandas.DataFrame(), columns=None):
     for col_name in columns:
-        func(data[col_name])
+        sns.distplot(data[col_name])
         plt.xlabel(col_name)
         plt.show()
 
 
 if __name__ == '__main__':
-    data = file_open()
-    visualization(plt.hist, data, data.columns)
+    data = file_open("./data/White Wine Dataset.csv")
+    visualization(data, data.columns)
     data_overall(data)

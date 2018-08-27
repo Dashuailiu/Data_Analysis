@@ -1,5 +1,6 @@
 import pandas
-import numpy
+import operator
+import numpy as np
 
 
 def z_score(data, filter_col=None):
@@ -27,11 +28,22 @@ def z_score(data, filter_col=None):
 
 def z_score_np(data, ddof=1):
     """
-
     :param data:
     :param ddof: biased estimator default 1
     :return: standardized biased estimator
     """
     if not isinstance(data, pandas.DataFrame):
         raise TypeError("The type of input is wrong. Please use pandas.DataFrame.")
-    return data.apply(lambda x: (x-numpy.mean(x))/numpy.std(x, ddof=ddof))
+    return data.apply(lambda x: (x-np.mean(x))/np.std(x, ddof=ddof))
+
+
+def reject_outliers(data=pandas.DataFrame(), min_thre=2, max_thre=5, filter_col=None):
+    if not filter_col:
+        filter_col = []
+
+    for col in data.columns:
+        if col in filter_col:
+            continue
+        data = data[~(operator.and_(min_thre * data[col].std() < np.abs(data[col]-data[col].mean()),
+                      max_thre * data[col].std() > np.abs(data[col] - data[col].mean())))]
+    return data
