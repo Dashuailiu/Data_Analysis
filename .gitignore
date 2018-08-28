@@ -89,6 +89,7 @@ celerybeat-schedule
 env/
 venv/
 venv_al/
+LightGBM/
 ENV/
 env.bak/
 venv.bak/
