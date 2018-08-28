@@ -28,7 +28,7 @@ def pre_processing(data):
     data.drop_duplicates(inplace=True)
 
     # remove outliers but keep extreme values
-    data = reject_outliers(data, 2, 6, [target_col])
+    data = reject_outliers(data, 3, 6, [target_col])
 
     plt.figure(figsize=(18, 6))
     sns.boxplot(data=data)
@@ -36,16 +36,19 @@ def pre_processing(data):
     plt.ylabel("Quartile Range - Normalized & Remove Outlier")
     plt.show()
 
+    sns.countplot(x=target_col, data=data)
+    plt.show()
+
     # reclassification
     # (3.0, 9.0) => poor, fair, good, excellent
     rec_dict = {
-        3: 'poor',
-        4: 'poor',
-        5: 'fair',
-        6: 'good',
-        7: 'good',
-        8: 'excellent',
-        9: 'excellent'
+        3: 'Poor',
+        4: 'Poor',
+        5: 'Fair',
+        6: 'Good',
+        7: 'Good',
+        8: 'Excellent',
+        9: 'Excellent'
     }
     data[target_col] = data[target_col].map(rec_dict)
     print(data.head())
