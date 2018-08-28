@@ -43,7 +43,7 @@ def pre_processing(data):
     # (3.0, 9.0) => poor, fair, good, excellent
     rec_dict = {
         3: 'Poor',
-        4: 'Poor',
+        4: 'Fair',
         5: 'Fair',
         6: 'Good',
         7: 'Good',

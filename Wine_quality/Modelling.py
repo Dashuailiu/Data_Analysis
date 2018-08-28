@@ -43,13 +43,14 @@ def feature_selection(data):
     fs = FeatureSelector(data=train, labels=data[target_col])
     fs.identify_zero_importance(task='classification', eval_metric='auc',
                                 n_iterations=10, early_stopping=True)
-    fs.plot_feature_importances(threshold=0.99, plot_n=12)
-    plt.show()
+    fs.plot_feature_importances(threshold=0.9, plot_n=12)
+    plt.xlabel('Importance Value')
+    plt.ylabel('Attributes')
     print(fs.feature_importances)
     ipt = 0
     sel_cols = []
     for i in range(len(fs.feature_importances.index)):
-        if ipt >= 0.99:
+        if ipt >= 0.9:
             break
         ipt += fs.feature_importances['normalized_importance'].iloc[i]
         sel_cols.append(fs.feature_importances['feature'].iloc[i])
@@ -68,7 +69,7 @@ def model_rforest(data):
     macc = []
     acc_temp = 0
     prefect_estimator = 10
-    ne_list = range(50, 200, 10)
+    ne_list = range(50, 500, 10)
     for ne in ne_list:
         print("Optimization for parameter n_estimators %s" % ne)
         model = RandomForestClassifier(n_estimators=ne, max_features="auto",
@@ -79,7 +80,6 @@ def model_rforest(data):
             prefect_estimator = ne
         macc.append(acc)
 
-    print(prefect_estimator)
     sns.lineplot(ne_list, macc)
     plt.axis("tight")
     plt.xlabel('Number of subtrees')
@@ -88,6 +88,7 @@ def model_rforest(data):
 
     macc = []
     acc_temp = 0
+    prefect_msl = 0
     msl_list = [i for i in range(1, 11, 1)] + [i for i in range(20, 80, 10)]
     for msl in msl_list:
         print("Optimization for parameter min_samples_leaf %s" % msl)
@@ -97,6 +98,7 @@ def model_rforest(data):
         if acc > acc_temp:
             acc_temp = acc
             final_model = model
+            prefect_msl = msl
         macc.append(acc)
 
     sns.lineplot(msl_list, macc)
@@ -106,6 +108,8 @@ def model_rforest(data):
     plt.show()
 
     print("Final Model Accuracy %s" % "{0:.3%}".format(acc_temp))
+    print(prefect_estimator)
+    print(prefect_msl)
     return final_model
 
 
