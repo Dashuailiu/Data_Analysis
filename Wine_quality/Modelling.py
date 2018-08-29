@@ -110,6 +110,16 @@ def model_rforest(data):
     print("Final Model Accuracy %s" % "{0:.3%}".format(acc_temp))
     print(prefect_estimator)
     print(prefect_msl)
+
+    features = std_data.columns.drop(target_col)
+    importances = final_model.feature_importances_
+    indices = np.argsort(importances)
+
+    plt.title('Feature Importances')
+    plt.barh(range(len(indices)), importances[indices], color='b', align='center')
+    plt.yticks(range(len(indices)), [features[i] for i in indices])
+    plt.xlabel('Relative Importance')
+    plt.show()
     return final_model
 
 
