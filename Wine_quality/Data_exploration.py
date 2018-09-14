@@ -35,7 +35,7 @@ def data_overall(data=pandas.DataFrame()):
     std_target_func = lambda x: (x - target_mean)/target_std
 
     for i in range(r_num):
-        record = std_data.iloc[i, 1:col_num]
+        record = std_data.iloc[i, :col_num]
         label_color = 1.0/(1.0 + exp(-std_target_func(std_data.iloc[i, col_num])))
         if std_data.iloc[i, col_num] not in legend_list:
             legend_patch = mpatches.Patch(color=cmp(label_color), label=std_data.iloc[i, col_num])

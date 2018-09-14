@@ -28,7 +28,7 @@ def pre_processing(data):
     data.drop_duplicates(inplace=True)
 
     # remove outliers but keep extreme values
-    data = reject_outliers(data, 3, 6, [target_col])
+    data = reject_outliers(data, 3, 100, [target_col])
 
     plt.figure(figsize=(18, 6))
     sns.boxplot(data=data)
@@ -43,7 +43,7 @@ def pre_processing(data):
     # (3.0, 9.0) => poor, fair, good, excellent
     rec_dict = {
         3: 'Poor',
-        4: 'Fair',
+        4: 'Poor',
         5: 'Fair',
         6: 'Good',
         7: 'Good',
@@ -55,6 +55,15 @@ def pre_processing(data):
     sns.countplot(x=target_col, data=data)
     plt.show()
     print(data.describe(include='all'))
+
+    # # data resampling
+    # from sklearn.utils import resample
+    # data = resample(data, random_state=0)
+    #
+    # print(data.head())
+    # sns.countplot(x=target_col, data=data)
+    # plt.show()
+    # print(data.describe(include='all'))
 
     data.to_csv("./data/clean_data.csv", columns=data.columns, index=None)
 

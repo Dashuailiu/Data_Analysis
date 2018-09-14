@@ -37,7 +37,7 @@ def z_score_np(data, ddof=1):
     return data.apply(lambda x: (x-np.mean(x))/np.std(x, ddof=ddof))
 
 
-def reject_outliers(data=pandas.DataFrame(), min_thre=2, max_thre=5, filter_col=None):
+def reject_outliers(data=pandas.DataFrame(), min_thre=3, max_thre=6, filter_col=None):
     if not filter_col:
         filter_col = []
 
